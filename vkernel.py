@@ -4,12 +4,12 @@ def vzero(stimulus,kernels):
     return kernels[0]
 #Returns vzero function to be minimized based on given stimuli and measured response 
 def vzerof(stimuli,outputs):
-    func = lambda kernels: (.5/outputs.shape[0])*np.sum(np.array([(outputs[i]-vzero(stimuli[i],kernels[0]))**2
+    func = lambda kernels: (.5/outputs.shape[0])*np.sum(np.array([(outputs[i]-vzero(stimuli[i],kernels))**2
                                                                    for i in xrange(outputs.shape[0])]))
     return func
 #Returns gradient of vzero function to be minimized
 def vzerof_grad(stimuli,outputs):
-    func = lambda kernels: (-1./outputs.shape[0])*np.sum(np.array([(outputs[i]-vzero(stimuli[i],kernels[0]))
+    func = lambda kernels: (-1./outputs.shape[0])*np.sum(np.array([(outputs[i]-vzero(stimuli[i],kernels))
                                                                     for i in xrange(outputs.shape[0])]))
     return func
 
