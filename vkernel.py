@@ -17,7 +17,11 @@ def vzerof_grad(stimuli,outputs):
 def get_vzero(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1)
-    return opt.minimize(vzerof(stimuli,outputs),guess,method = meth,jac=vzerof_grad(stimuli,outputs)).x
+    if meth is None:
+        output = opt.minimize(vzerof(stimuli,outputs),guess,jac=vzerof_grad(stimuli,outputs)).x
+    else:
+        output = opt.minimize(vzerof(stimuli,outputs),guess,method = meth,jac=vzerof_grad(stimuli,outputs)).x
+    return output
 
 #Function that calculates output from 1st order Volterra model
 def vone(stimulus,kernels):
@@ -39,7 +43,11 @@ def vonef_grad(stimuli,outputs):
 def get_vone(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0])
-    return opt.minimize(vonef(stimuli,outputs),guess,method = meth,jac=vonef_grad(stimuli,outputs)).x
+    if meth is None:
+        output = opt.minimize(vonef(stimuli,outputs),guess,jac=vonef_grad(stimuli,outputs)).x
+    else:
+        output = opt.minimize(vonef(stimuli,outputs),guess,method = meth,jac=vonef_grad(stimuli,outputs)).x
+    return output
 
 #Function that calculates response from 2nd order Volterra model
 def vtwo(stimulus,kernels):
@@ -68,7 +76,11 @@ def vtwof_grad(stimuli,outputs):
 def get_vtwo(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0]+stimuli[0].shape[0]**2)
-    return opt.minimize(vtwof(stimuli,outputs),guess,method = meth,jac=vtwof_grad(stimuli,outputs)).x
+    if meth is None:
+        output = opt.minimize(vtwof(stimuli,outputs),guess,jac=vtwof_grad(stimuli,outputs)).x
+    else:
+        output = opt.minimize(vtwof(stimuli,outputs),guess,method = meth,jac=vtwof_grad(stimuli,outputs)).x
+    return output
     
 #Takes stimuli and kernels as input and generates expected response. Calculates correct order based on length of kernels
 def vresponse(stimuli,kernels):
