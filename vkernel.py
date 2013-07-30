@@ -36,7 +36,7 @@ def vonef_grad(stimuli,outputs):
     func = lambda kernels: np.concatenate((np.array([gradhzero(kernels)]),np.array([gradhone(k,kernels) for k in xrange(stimuli[0].shape[0])])))
     return func 
 #Function that does minimization to find vone.
-def get_vzero(stimuli,outputs,guess=None,method=None):
+def get_vone(stimuli,outputs,guess=None,method=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0])
     return opt.minimize(vonef(stimuli,outputs),guess,method = method,jac=vonef_grad(stimuli,outputs)).x
@@ -65,7 +65,7 @@ def vtwof_grad(stimuli,outputs):
                                            np.array([[gradhtwo(n,m,kernels) for m in xrange(stimuli[0].shape[0])] for n in xrange(stimuli[0].shape[0])]).flatten()))
     return func 
 #Function that does minimization to find vtwo.
-def get_vzero(stimuli,outputs,guess=None,method=None):
+def get_vtwo(stimuli,outputs,guess=None,method=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0]+stimuli[0].shape[0]**2)
     return opt.minimize(vtwof(stimuli,outputs),guess,method = method,jac=vtwof_grad(stimuli,outputs)).x
