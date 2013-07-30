@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import optimize as opt
 #Function that calculates output from 0th order Volterra model
 def vzero(stimulus,kernels):
     return kernels[0]
@@ -12,6 +13,11 @@ def vzerof_grad(stimuli,outputs):
     func = lambda kernels: (-1./outputs.shape[0])*np.sum(np.array([(outputs[i]-vzero(stimuli[i],kernels))
                                                                     for i in xrange(outputs.shape[0])]))
     return func
+#Function that does minimization to find vzero.
+def get_vzero(stimuli,outputs,guess=None,method=None):
+    if guess is None:
+        guess = np.zeros(1)
+    return opt.minimize(vzerof(stimuli,outputs),guess,method = method,jac=vzerof_grad(stimuli,outputs)).x
 
 #Function that calculates output from 1st order Volterra model
 def vone(stimulus,kernels):
@@ -29,6 +35,11 @@ def vonef_grad(stimuli,outputs):
                                                                           for i in xrange(outputs.shape[0])]))
     func = lambda kernels: np.concatenate((np.array([gradhzero(kernels)]),np.array([gradhone(k,kernels) for k in xrange(stimuli[0].shape[0])])))
     return func 
+#Function that does minimization to find vone.
+def get_vzero(stimuli,outputs,guess=None,method=None):
+    if guess is None:
+        guess = np.zeros(1+stimuli[0].shape[0])
+    return opt.minimize(vonef(stimuli,outputs),guess,method = method,jac=vonef_grad(stimuli,outputs)).x
 
 #Function that calculates response from 2nd order Volterra model
 def vtwo(stimulus,kernels):
@@ -53,6 +64,11 @@ def vtwof_grad(stimuli,outputs):
                                            np.array([gradhone(k,kernels) for k in xrange(stimuli[0].shape[0])]),
                                            np.array([[gradhtwo(n,m,kernels) for m in xrange(stimuli[0].shape[0])] for n in xrange(stimuli[0].shape[0])]).flatten()))
     return func 
+#Function that does minimization to find vtwo.
+def get_vzero(stimuli,outputs,guess=None,method=None):
+    if guess is None:
+        guess = np.zeros(1+stimuli[0].shape[0]+stimuli[0].shape[0]**2)
+    return opt.minimize(vtwof(stimuli,outputs),guess,method = method,jac=vtwof_grad(stimuli,outputs)).x
     
 #Takes stimuli and kernels as input and generates expected response. Calculates correct order based on length of kernels
 def vresponse(stimuli,kernels):
