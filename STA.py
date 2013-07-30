@@ -9,10 +9,10 @@ def STA(stimuli,outputs,whitened=None):
     hzero = meanout
     hzeroold = hzero+1
     numiteration = 0
-    hone = numpy.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
+    hone = np.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
     while np.absolute(hzero-hzeroold)>10**-10:
         numiteration +=1
-        hone = numpy.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
+        hone = np.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
         hzeroold = hzero
         hzero = meanout-np.dot(hone,meanstim)
         if whitened:
