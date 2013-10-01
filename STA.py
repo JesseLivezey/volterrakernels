@@ -23,3 +23,22 @@ def STA(stimuli,outputs,whitened=None):
             print 'Kernels not converging'
             break
     return np.concatenate((np.array([hzero]),hone))
+
+def STASys(stimuli,outputs,whitened=None):
+    nSTRFs = output.shape[0]
+    hzeros = np.zeros(nSTRFs)
+    hones = np.zeros((nSTRFs,stimuli.shape[1]))
+    for ii in xrange(nSTRFs):
+        temp = STA(stimuli,outputs[ii],whitened)
+        hzeros[ii] = temp[0]
+        hones[ii] = temp[1:]
+    return (hzeros,hones)
+
+def STC(stimuli,outputs):
+    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(output.shape[0])]),axis=0)
+    stcM = stcM-np.mean(np.array([np.outer(stimuli[ii],stimuli[ii]) for ii in xrange(output.shape[0])]),axis=0)
+    return stcM
+
+def STCSys(stimuli,outputs):
+    stcs = np.array([STC(stimuli,outputs[ii]) for ii in xrange(outputs.shape[0])])
+    return stcs

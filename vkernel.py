@@ -120,9 +120,9 @@ def vtwof_gradS(stimuli,outputs):
                                                                           for i in xrange(outputs.shape[0])]))
     gradhtwo = lambda n,m,kernels:(-1./outputs.shape[0])*oneOrTwo(n,m)*np.sum(np.array([(stimuli[i][n]*stimuli[i][m]*(outputs[i]-vtwoS(stimuli[i],kernels)))
                                                                            for i in xrange(outputs.shape[0])]))
-    func = lambda kernels: np.concatenate((np.array([gradhzero(kernels)]),
-                                           np.array([gradhone(k,kernels) for k in xrange(stimuli[0].shape[0])]),
-                                           np.array([[gradhtwo(n,m,kernels) for m in xrange(n+1)] for n in xrange(stimuli[0].shape[0])]).flatten()))
+    func = lambda kernels: np.concatenate((np.array([gradhzero(kernels)]),)+
+                                           (np.array([gradhone(k,kernels) for k in xrange(stimuli[0].shape[0])]),)+
+                                           tuple((np.array([gradhtwo(n,m,kernels) for m in xrange(n+1)]) for n in xrange(stimuli[0].shape[0]))))
     return func 
 #Function that does minimization to find vtwo.
 def get_vtwo(stimuli,outputs,guess=None,meth=None):
@@ -139,9 +139,9 @@ def get_vtwoS(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+length+(length**2+length)/2)
     if meth is None:
-        output = opt.minimize(vtwof(stimuli,outputs),guess,jac=vtwof_grad(stimuli,outputs)).x
+        output = opt.minimize(vtwofS(stimuli,outputs),guess,jac=vtwof_gradS(stimuli,outputs)).x
     else:
-        output = opt.minimize(vtwof(stimuli,outputs),guess,method = meth,jac=vtwof_grad(stimuli,outputs)).x
+        output = opt.minimize(vtwofS(stimuli,outputs),guess,method = meth,jac=vtwof_gradS(stimuli,outputs)).x
     return output
     
 #Takes stimuli and kernels as input and generates expected response. Calculates correct order based on length of kernels
