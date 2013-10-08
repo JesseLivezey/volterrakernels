@@ -29,7 +29,7 @@ def STASys(stimuli,outputs,whitened=None):
     hzeros = np.zeros(nSTRFs)
     hones = np.zeros((nSTRFs,stimuli.shape[1]))
     for ii in xrange(nSTRFs):
-        temp = STA(stimuli,outputs[ii],whitened)
+        temp = STA(stimuli,outputs[:,ii],whitened)
         hzeros[ii] = temp[0]
         hones[ii] = temp[1:]
     return (hzeros,hones)
