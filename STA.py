@@ -1,11 +1,10 @@
 from __future__ import division
 import numpy as np
 #Function to calculate the Spike-Triggered-Average
-def STA(stimuli,outputs,whitened=None):
+def STA(stimuli,outputs,meanstim,whitened=None):
     if whitened is None:
         whitened = False
     meanout = np.mean(outputs)
-    meanstim = np.mean(stimuli,axis=0)
     hzero = meanout
     hzeroold = hzero+1
     numiteration = 0
@@ -28,19 +27,21 @@ def STASys(stimuli,outputs,whitened=None):
     nSTRFs = outputs.shape[1]
     hzeros = np.zeros(nSTRFs)
     hones = np.zeros((nSTRFs,stimuli.shape[1]))
+    meanstim = np.mean(stimuli,axis=0)
     for ii in xrange(nSTRFs):
-        temp = STA(stimuli,outputs[:,ii],whitened)
+        temp = STA(stimuli,outputs[:,ii],meanstim,whitened)
         hzeros[ii] = temp[0]
         hones[ii] = temp[1:]
     return (hzeros,hones)
 
-def STC(stimuli,outputs):
+def STC(stimuli,outputs,meancov):
     stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
-    stcM = stcM-np.mean(np.array([np.outer(stimuli[ii],stimuli[ii]) for ii in xrange(outputs.shape[0])]),axis=0)
+    stcM = stcM-meancov
     return stcM
 
 def STCSys(stimuli,outputs):
-    stcs = np.array([STC(stimuli,outputs[:,ii]) for ii in xrange(outputs.shape[1])])
+    meancov = np.mean(np.array([np.outer(stim,stim[ii]) for stim in stimuli]),axis=0)
+    stcs = np.array([STC(stimuli,outputs[:,ii],meancov) for ii in xrange(outputs.shape[1])])
     return stcs
 
 def MaxRelDimSTC(stcs):
