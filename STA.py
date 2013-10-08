@@ -40,7 +40,7 @@ def STC(stimuli,outputs):
     return stcM
 
 def STCSys(stimuli,outputs):
-    stcs = np.array([STC(stimuli,outputs[ii]) for ii in xrange(outputs.shape[0])])
+    stcs = np.array([STC(stimuli,outputs[:,ii]) for ii in xrange(outputs.shape[1])])
     return stcs
 
 def MaxRelDimSTC(stcs):
