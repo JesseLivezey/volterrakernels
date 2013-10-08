@@ -25,7 +25,7 @@ def STA(stimuli,outputs,whitened=None):
     return np.concatenate((np.array([hzero]),hone))
 
 def STASys(stimuli,outputs,whitened=None):
-    nSTRFs = outputs.shape[0]
+    nSTRFs = outputs.shape[1]
     hzeros = np.zeros(nSTRFs)
     hones = np.zeros((nSTRFs,stimuli.shape[1]))
     for ii in xrange(nSTRFs):
