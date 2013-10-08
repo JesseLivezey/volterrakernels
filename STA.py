@@ -45,9 +45,11 @@ def STCSys(stimuli,outputs):
     return stcs
 
 def MaxRelDimSTC(stcs):
+    vals = []
     strfs = []
     for stc in stcs:
         eVals,eVecs = np.linalg.eigh(stc)
         idx = np.argsort(np.absolute(eVals))
-        strfs.append((eVals[idx][-1],eVecs[idx][-1]))
-    return strfs
+        vals.append(eVals[idx][-1])
+        strfs.append(eVecs[idx][-1])
+    return (np.array(vals),np.array(strfs))
