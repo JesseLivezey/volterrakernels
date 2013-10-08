@@ -35,8 +35,8 @@ def STASys(stimuli,outputs,whitened=None):
     return (hzeros,hones)
 
 def STC(stimuli,outputs):
-    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(output.shape[0])]),axis=0)
-    stcM = stcM-np.mean(np.array([np.outer(stimuli[ii],stimuli[ii]) for ii in xrange(output.shape[0])]),axis=0)
+    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
+    stcM = stcM-np.mean(np.array([np.outer(stimuli[ii],stimuli[ii]) for ii in xrange(outputs.shape[0])]),axis=0)
     return stcM
 
 def STCSys(stimuli,outputs):
