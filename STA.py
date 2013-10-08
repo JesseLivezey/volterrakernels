@@ -40,7 +40,7 @@ def STC(stimuli,outputs,meancov):
     return stcM
 
 def STCSys(stimuli,outputs):
-    meancov = np.mean(np.array([np.outer(stim,stim[ii]) for stim in stimuli]),axis=0)
+    meancov = np.mean(np.array([np.outer(stim,stim) for stim in stimuli]),axis=0)
     stcs = np.array([STC(stimuli,outputs[:,ii],meancov) for ii in xrange(outputs.shape[1])])
     return stcs
 
