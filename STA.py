@@ -35,7 +35,7 @@ def STASys(stimuli,outputs,whitened=None):
     return (hzeros,hones)
 
 def STC(stimuli,outputs,meancov):
-    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
+    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)/np.mean(outputs)
     stcM = stcM-meancov
     return stcM
 
