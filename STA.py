@@ -14,7 +14,7 @@ def STA(stimuli,outputs,meanstim,whitened=None):
     staConst = staConst/stimuli.shape[0]
     hone = staConst-hzero*meanstim
     if whitened:
-        ac = np.zero((stimuli.shape[1],stimuli.shape[1]))
+        ac = np.zeros((stimuli.shape[1],stimuli.shape[1]))
         for ii in xrange(stimuli.shape[0]):
             ac += np.outer(stimuli[ii],stimuli[ii])
         ac = ac/stimuli.shape[0]
