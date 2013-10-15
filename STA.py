@@ -10,7 +10,7 @@ def STA(stimuli,outputs,meanstim,whitened=None):
     numiteration = 0
     staConst = np.zeros(stimuli.shape[1])
     for ii in xrange(stimuli.shape[0]):
-        staConst += stimuli[ii]*output[ii]
+        staConst += stimuli[ii]*outputs[ii]
     staConst = staConst/stimuli.shape[0]
     hone = staConst-hzero*meanstim
     if whitened:
