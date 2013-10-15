@@ -8,15 +8,24 @@ def STA(stimuli,outputs,meanstim,whitened=None):
     hzero = meanout
     hzeroold = hzero+1
     numiteration = 0
-    hone = np.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
+    staConst = np.zeros(stimuli.shape[1])
+    for ii in xrange(stimuli.shape[0]):
+        staConst += stimuli[ii]*output[ii]
+    staConst = staConst/stimuli.shape[0]
+    hone = staConst-hzero*meanstim
+    if whitened:
+        ac = np.zero((stimuli.shape[1],stimuli.shape[1]))
+        for ii in xrange(stimuli.shape[0]):
+            ac += np.outer(stimuli[ii],stimuli[ii])
+        ac = ac/stimuli.shape[0]
+        aci = np.linalg.pinv(ac)
     while np.absolute(hzero-hzeroold)>10**-10:
         numiteration +=1
-        hone = np.mean(np.array([stimulus*outputs[i] for i,stimulus in enumerate(stimuli)]),axis=0)-hzero*meanstim
+        hone = staConst-hzero*meanstim
         hzeroold = hzero
         hzero = meanout-np.dot(hone,meanstim)
         if whitened:
             #pseudoinverse of autocorrelation matrix
-            aci = np.linalg.pinv(np.mean(np.array([np.outer(stim,stim) for stim in stimuli]),axis=0))
             hone = np.dot(aci,hone)
         if numiteration > 100:
             print 'Kernels not converging'
