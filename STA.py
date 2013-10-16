@@ -19,7 +19,7 @@ def STA(stimuli,outputs,meanstim,whitened=None):
             ac += np.outer(stimuli[ii],stimuli[ii])
         ac = ac/stimuli.shape[0]
         aci = np.linalg.pinv(ac)
-    while np.absolute(hzero-hzeroold)>10**-10:
+    while np.absolute(hzero-hzeroold)>10**-6:
         numiteration +=1
         hone = staConst-hzero*meanstim
         hzeroold = hzero
