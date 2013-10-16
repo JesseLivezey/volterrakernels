@@ -23,10 +23,10 @@ def STA(stimuli,outputs,meanstim,whitened=None):
         numiteration +=1
         hone = staConst-hzero*meanstim
         hzeroold = hzero
-        hzero = meanout-np.dot(hone,meanstim)
         if whitened:
             #pseudoinverse of autocorrelation matrix
             hone = np.dot(aci,hone)
+        hzero = meanout-np.dot(hone,meanstim)
         if numiteration > 100:
             print 'Kernels not converging'
             break
