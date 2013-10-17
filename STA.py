@@ -82,8 +82,16 @@ def STC(stimuli,outputs,meancov):
 
 def STCSys(stimuli,outputs):
     meancov = np.mean(np.array([np.outer(stim,stim) for stim in stimuli]),axis=0)
-    outputs = np.absolute(outputs)
     stcs = np.array([STC(stimuli,outputs[:,ii],meancov) for ii in xrange(outputs.shape[1])])
+    return stcs
+
+def STC2(stimuli,outputs):
+    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
+    return stcM
+
+def STCSys2(stimuli,outputs):
+    outputs = np.absolute(outputs)
+    stcs = np.array([STC2(stimuli,outputs[:,ii]) for ii in xrange(outputs.shape[1])])
     return stcs
 
 def MaxRelDimSTC(stcs):
