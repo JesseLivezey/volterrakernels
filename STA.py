@@ -32,6 +32,26 @@ def STA(stimuli,outputs,meanstim,whitened=None):
             break
     return np.concatenate((np.array([hzero]),hone))
 
+def STA2(stimuli,outputs,whitened=None):
+    if whitened is None:
+        whitened = False
+    meanout = np.mean(outputs)
+    hzero = 0.
+    hone = np.zeros(stimuli.shape[1])
+    for ii in xrange(stimuli.shape[0]):
+        hone += stimuli[ii]*outputs[ii]
+    hone = hone/stimuli.shape[0]
+    if whitened:
+        ac = np.zeros((stimuli.shape[1],stimuli.shape[1]))
+        for ii in xrange(stimuli.shape[0]):
+            ac += np.outer(stimuli[ii],stimuli[ii])
+        ac = ac/stimuli.shape[0]
+        aci = np.linalg.pinv(ac)
+        #pseudoinverse of autocorrelation matrix
+        hone = np.dot(aci,hone)
+        hzero = meanout-np.dot(hone,meanstim)
+    return np.concatenate((np.array([hzero]),hone))
+
 def STASys(stimuli,outputs,whitened=None):
     nSTRFs = outputs.shape[1]
     hzeros = np.zeros(nSTRFs)
@@ -39,6 +59,18 @@ def STASys(stimuli,outputs,whitened=None):
     meanstim = np.mean(stimuli,axis=0)
     for ii in xrange(nSTRFs):
         temp = STA(stimuli,outputs[:,ii],meanstim,whitened)
+        hzeros[ii] = temp[0]
+        hones[ii] = temp[1:]
+    return (hzeros,hones)
+
+def STASys2(stimuli,outputs,whitened=None):
+    nSTRFs = outputs.shape[1]
+    hzeros = np.zeros(nSTRFs)
+    hones = np.zeros((nSTRFs,stimuli.shape[1]))
+    meanstim = np.mean(stimuli,axis=0)
+    stimuli = stimuli-np.array([meanstim]).T
+    for ii in xrange(nSTRFs):
+        temp = STA2(stimuli,outputs[:,ii],whitened)
         hzeros[ii] = temp[0]
         hones[ii] = temp[1:]
     return (hzeros,hones)
