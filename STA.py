@@ -49,7 +49,6 @@ def STA2(stimuli,outputs,whitened=None):
         aci = np.linalg.pinv(ac)
         #pseudoinverse of autocorrelation matrix
         hone = np.dot(aci,hone)
-        hzero = meanout-np.dot(hone,meanstim)
     return np.concatenate((np.array([hzero]),hone))
 
 def STASys(stimuli,outputs,whitened=None):
