@@ -68,7 +68,7 @@ def STASys2(stimuli,outputs,whitened=None):
     hzeros = np.zeros(nSTRFs)
     hones = np.zeros((nSTRFs,stimuli.shape[1]))
     meanstim = np.mean(stimuli,axis=0)
-    stimuli = stimuli-np.array([meanstim]).T
+    stimuli = stimuli-np.array([meanstim])
     for ii in xrange(nSTRFs):
         temp = STA2(stimuli,outputs[:,ii],whitened)
         hzeros[ii] = temp[0]
