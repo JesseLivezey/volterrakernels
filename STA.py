@@ -83,7 +83,7 @@ def STASys2(stimuli,outputs,whitened=None):
     meanstim = np.mean(stimuli,axis=0)
     stimuli = stimuli-np.array([meanstim])
     for ii in xrange(nSTRFs):
-        temp = STA2(stimuli,outputs[:,ii],whitened)
+        temp = STA2(stimuli,outputs[:,ii],acoi,whitened)
         hzeros[ii] = temp[0]
         hones[ii] = temp[1:]
     return (hzeros,hones)
@@ -100,7 +100,7 @@ def sparseSTASys(stimuli,outputs,whitened=None):
         aco = np.zeros((outputs.shape[1],outputs.shape[1]))
         for ii in xrange(outputs.shape[0]):
             aco += np.outer(outputs[ii],outputs[ii])
-        aco = ac/stimuli.shape[0]
+        aco = aco/stimuli.shape[0]
         acoi = np.linalg.pinv(aco)
     for ii in xrange(nSTRFs):
         print ii
