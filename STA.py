@@ -81,7 +81,7 @@ def STASys2(stimuli,outputs,whitened=None):
         whitened=False
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
-        strfs = np.dot(np.dot(outputs.T,outputs),strfs)/stimuli.shape[0]
+        strfs = np.dot(np.dot(stimuli.T,stimuli),strfs)/stimuli.shape[0]
     return strfs.T
 
 def sparseSTASys(stimuli,outputs,whitened=None):
