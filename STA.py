@@ -77,7 +77,7 @@ def STASys(stimuli,outputs,whitened=None):
     return (hzeros,hones)
 
 def STASys2(stimuli,outputs,whitened=None):
-    if whitened=None:
+    if whitened is None:
         whitened=False
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
