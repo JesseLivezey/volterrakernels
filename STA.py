@@ -77,37 +77,20 @@ def STASys(stimuli,outputs,whitened=None):
     return (hzeros,hones)
 
 def STASys2(stimuli,outputs,whitened=None):
-    nSTRFs = outputs.shape[1]
-    hzeros = np.zeros(nSTRFs)
-    hones = np.zeros((nSTRFs,stimuli.shape[1]))
-    meanstim = np.mean(stimuli,axis=0)
-    stimuli = stimuli-np.array([meanstim])
-    for ii in xrange(nSTRFs):
-        temp = STA2(stimuli,outputs[:,ii],acoi,whitened)
-        hzeros[ii] = temp[0]
-        hones[ii] = temp[1:]
-    return (hzeros,hones)
+    if whitened=None:
+        whitened=False
+    strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
+    if whitened:
+        strfs = np.dot(np.dot(outputs.T,outputs),strfs)/stimuli.shape[0]
+    return strfs.T
 
 def sparseSTASys(stimuli,outputs,whitened=None):
     if whitened is None:
         whitened = False
-    nSTRFs = outputs.shape[1]
-    hzeros = np.zeros(nSTRFs)
-    hones = np.zeros((nSTRFs,stimuli.shape[1]))
-    meanstim = np.mean(stimuli,axis=0)
-    stimuli = stimuli-np.array([meanstim])
+    strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
-        aco = np.zeros((outputs.shape[1],outputs.shape[1]))
-        for ii in xrange(outputs.shape[0]):
-            aco += np.outer(outputs[ii],outputs[ii])
-        aco = aco/stimuli.shape[0]
-        acoi = np.linalg.pinv(aco)
-    for ii in xrange(nSTRFs):
-        print ii
-        temp = sparseSTA(stimuli,outputs[:,ii],acoi,whitened)
-        hzeros[ii] = temp[0]
-        hones[ii] = temp[1:]
-    return (hzeros,hones)
+        strfs = np.dot(strfs,np.dot(stimuli.T,stimuli))/stimuli.shape[0]
+    return strfs
 
 def STC(stimuli,outputs,meancov):
     stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)/np.mean(outputs)
