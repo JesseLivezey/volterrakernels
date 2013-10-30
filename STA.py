@@ -81,7 +81,7 @@ def STASys2(stimuli,outputs,whitened=None):
         whitened=False
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
-        strfs = np.dot(np.dot(stimuli.T,stimuli),strfs)/stimuli.shape[0]
+        strfs = np.dot(np.linalg.pinv(np.dot(stimuli.T,stimuli)),strfs)/stimuli.shape[0]
     return strfs.T
 
 def sparseSTASys(stimuli,outputs,whitened=None):
@@ -89,7 +89,7 @@ def sparseSTASys(stimuli,outputs,whitened=None):
         whitened = False
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
-        strfs = np.dot(strfs,np.dot(stimuli.T,stimuli))/stimuli.shape[0]
+        strfs = np.dot(strfs,np.linalg.pinv(np.dot(stimuli.T,stimuli)))/stimuli.shape[0]
     return strfs.T
 
 def STC(stimuli,outputs,meancov):
