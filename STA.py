@@ -90,7 +90,7 @@ def sparseSTASys(stimuli,outputs,whitened=None):
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
         strfs = np.dot(strfs,np.dot(stimuli.T,stimuli))/stimuli.shape[0]
-    return strfs
+    return strfs.T
 
 def STC(stimuli,outputs,meancov):
     stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)/np.mean(outputs)
