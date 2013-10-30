@@ -51,20 +51,6 @@ def STA2(stimuli,outputs,whitened=None):
         hone = np.dot(aci,hone)
     return np.concatenate((np.array([hzero]),hone))
 
-def sparseSTA(stimuli,outputs,acoi,whitened=None):
-    if whitened is None:
-        whitened = False
-    meanout = np.mean(outputs)
-    hzero = 0.
-    hone = np.zeros(stimuli.shape[1])
-    for ii in xrange(stimuli.shape[0]):
-        hone += stimuli[ii]*outputs[ii]
-    hone = hone/stimuli.shape[0]
-    if whitened:
-        #pseudoinverse of autocorrelation matrix
-        hone = np.dot(acoi,hone)
-    return np.concatenate((np.array([hzero]),hone))
-
 def STASys(stimuli,outputs,whitened=None):
     nSTRFs = outputs.shape[1]
     hzeros = np.zeros(nSTRFs)
@@ -89,7 +75,7 @@ def sparseSTASys(stimuli,outputs,whitened=None):
         whitened = False
     strfs = np.dot(stimuli.T,outputs)/stimuli.shape[0]
     if whitened:
-        strfs = np.dot(strfs,np.linalg.pinv(np.dot(stimuli.T,stimuli)))/stimuli.shape[0]
+        strfs = np.dot(strfs,np.linalg.pinv(np.dot(outputs.T,outputs)))/stimuli.shape[0]
     return strfs.T
 
 def STC(stimuli,outputs,meancov):
