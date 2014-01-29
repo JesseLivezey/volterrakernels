@@ -106,3 +106,13 @@ def MaxRelDimSTC(stcs):
         vals.append(eVals[idx][-1])
         strfs.append(eVecs[idx][-1])
     return (np.array(vals),np.array(strfs))
+
+def MaxStimDimSTC(stcs):
+    vals = []
+    strfs = []
+    for stc in stcs:
+        eVals,eVecs = np.linalg.eigh(stc)
+        idx = np.argsort(eVals)
+        vals.append(eVals[idx][-1])
+        strfs.append(eVecs[idx][-1])
+    return (np.array(vals),np.array(strfs))
