@@ -113,7 +113,7 @@ def MaxStimDimSTC(stcs):
     strfs = []
     for stc in stcs:
         length = stcs[0].shape[0]
-        eVal,eVec = sp.linalg.eigh(stc,eigvals=(length-1,length-1)
+        eVal,eVec = sp.linalg.eigh(stc,eigvals=(length-1,length-1))
         vals.append(eVal)
         strfs.append(eVec)
     return (np.array(vals),np.array(strfs))
