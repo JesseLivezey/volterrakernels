@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+import scipy as sp
 #Function to calculate the Spike-Triggered-Average
 def STA(stimuli,outputs,meanstim,whitened=None):
     if whitened is None:
@@ -101,7 +102,7 @@ def MaxRelDimSTC(stcs):
     vals = []
     strfs = []
     for stc in stcs:
-        eVals,eVecs = np.linalg.eigh(stc)
+        eVals,eVecs = sp.linalg.eigh(stc,turbo=True)
         idx = np.argsort(np.absolute(eVals))
         vals.append(eVals[idx][-1])
         strfs.append(eVecs[:idx][:,-1])
@@ -111,8 +112,8 @@ def MaxStimDimSTC(stcs):
     vals = []
     strfs = []
     for stc in stcs:
-        eVals,eVecs = np.linalg.eigh(stc)
-        idx = np.argsort(eVals)
-        vals.append(eVals[idx][-1])
-        strfs.append(eVecs[:idx][:,-1])
+        length = stcs[0].shape[0]
+        eVal,eVec = sp.linalg.eigh(stc,eigvals=(length-1,length-1)
+        vals.append(eVal)
+        strfs.append(eVec)
     return (np.array(vals),np.array(strfs))
