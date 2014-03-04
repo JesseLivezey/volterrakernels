@@ -80,7 +80,8 @@ def sparseSTASys(stimuli,outputs,whitened=None):
     return strfs.T
 
 def STC(stimuli,outputs,meancov):
-    stcM = np.sum(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)/np.mean(outputs)
+    #stcM = np.sum(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)/np.mean(outputs)
+    stcM = np.dot(stimuli.T,np.multiply(np.array([outputs]).T,stimuli))/np.mean(outputs)
     stcM = stcM-meancov
     return stcM
 
@@ -90,7 +91,8 @@ def STCSys(stimuli,outputs):
     return stcs
 
 def STC2(stimuli,outputs):
-    stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
+    #stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
+    stcM = np.dot(stimuli.T,np.multiply(np.array([outputs]).T,stimuli))/outputs.shape[0]
     return stcM
 
 def STCSys2(stimuli,outputs):
