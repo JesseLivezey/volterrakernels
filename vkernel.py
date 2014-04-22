@@ -18,9 +18,8 @@ def get_vzero(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1)
     if meth is None:
-        output = opt.minimize(vzerof(stimuli,outputs),guess,jac=vzerof_grad(stimuli,outputs)).x
-    else:
-        output = opt.minimize(vzerof(stimuli,outputs),guess,method = meth,jac=vzerof_grad(stimuli,outputs)).x
+        meth = 'L-BFGS-B'
+    output = opt.minimize(vzerof(stimuli,outputs),guess,method = meth,jac=vzerof_grad(stimuli,outputs)).x
     return output
 
 #Function that calculates output from 1st order Volterra model
@@ -44,9 +43,8 @@ def get_vone(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0])
     if meth is None:
-        output = opt.minimize(vonef(stimuli,outputs),guess,jac=vonef_grad(stimuli,outputs)).x
-    else:
-        output = opt.minimize(vonef(stimuli,outputs),guess,method = meth,jac=vonef_grad(stimuli,outputs)).x
+        meth = 'L-BFGS-B'
+    output = opt.minimize(vonef(stimuli,outputs),guess,method = meth,jac=vonef_grad(stimuli,outputs)).x
     return output
 
 #Function to take matrix and return array of symmetrix elements
@@ -129,9 +127,8 @@ def get_vtwo(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+stimuli[0].shape[0]+stimuli[0].shape[0]**2)
     if meth is None:
-        output = opt.minimize(vtwof(stimuli,outputs),guess,jac=vtwof_grad(stimuli,outputs)).x
-    else:
-        output = opt.minimize(vtwof(stimuli,outputs),guess,method = meth,jac=vtwof_grad(stimuli,outputs)).x
+        meth = 'L-BFGS-B'
+    output = opt.minimize(vtwof(stimuli,outputs),guess,method = meth,jac=vtwof_grad(stimuli,outputs)).x
     return output
 #Function that does minimization to find vtwo.
 def get_vtwoS(stimuli,outputs,guess=None,meth=None):
@@ -139,9 +136,8 @@ def get_vtwoS(stimuli,outputs,guess=None,meth=None):
     if guess is None:
         guess = np.zeros(1+length+(length**2+length)/2)
     if meth is None:
-        output = opt.minimize(vtwofS(stimuli,outputs),guess,jac=vtwof_gradS(stimuli,outputs)).x
-    else:
-        output = opt.minimize(vtwofS(stimuli,outputs),guess,method = meth,jac=vtwof_gradS(stimuli,outputs)).x
+        meth = 'L-BFGS-B'
+    output = opt.minimize(vtwofS(stimuli,outputs),guess,method = meth,jac=vtwof_gradS(stimuli,outputs)).x
     return output
     
 #Takes stimuli and kernels as input and generates expected response. Calculates correct order based on length of kernels
