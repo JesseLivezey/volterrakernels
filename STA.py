@@ -30,7 +30,6 @@ def STCSys(stimuli,outputs):
     return stcs
 
 def STC2(stimuli,outputs):
-    #stcM = np.mean(np.array([np.outer(stimuli[ii],stimuli[ii])*outputs[ii] for ii in xrange(outputs.shape[0])]),axis=0)
     stcM = np.dot(stimuli.T,np.multiply(np.array([outputs]).T,stimuli))/outputs.shape[0]
     return stcM
 
